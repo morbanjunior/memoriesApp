@@ -3,6 +3,7 @@ import bodyParser from 'body-parser';
 import mongoose  from 'mongoose';
 import cors from 'cors';
 import postsRoute from './routes/posts.js';
+import userRoutes from './routes/user.js';
 import dotenv from 'dotenv';
 
 dotenv.config();
@@ -15,6 +16,14 @@ app.use(cors());
 
 //post request
 app.use('/posts', postsRoute);
+app.use('/user', userRoutes);
+
+//heroku 
+/*
+app.get('/', (req, res) =>{
+  res.send('Hello to Memories API');
+});
+*/
 
 //Mongodb connation. 
 
