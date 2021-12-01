@@ -4,6 +4,8 @@ import { useDispatch, useSelector } from 'react-redux';
 import moment from 'moment';
 import { useParams, useNavigate } from 'react-router-dom';
 
+import CommentSection from './CommentSection';
+
 import { getPost, getPostsBySearch } from '../../actions/posts';
 import useStyles from './styles';
 
@@ -19,11 +21,17 @@ const Post = () => {
     dispatch(getPost(id));
   }, [id]);
 
+  useEffect(() => {
+    if (post) {
+      dispatch(getPostsBySearch({ search: 'none', tags: post?.tags.join(',') }));
+    }
+  }, [post]);
+
   if (!post) return null;
 console.log(post);
 console.log(post.title)
 
-  if (!isLoading) {
+  if (isLoading) {
     return (
       <Paper elevation={6} className={classes.loadingPaper}>
         <CircularProgress size="7em" />
@@ -31,7 +39,9 @@ console.log(post.title)
     );
   }
 
-  //const recommendedPosts = posts.filter(({ _id }) => _id !== post._id);
+  const recommendedPosts = posts.filter(({ _id }) => _id !== post._id);
+
+  const openPost = (_id) => history(`/posts/${_id}`);
 
   return (
     <Paper style={{ padding: '20px', borderRadius: '15px' }} elevation={6}>
@@ -45,7 +55,7 @@ console.log(post.title)
           <Divider style={{ margin: '20px 0' }} />
           <Typography variant="body1"><strong>Realtime Chat - coming soon!</strong></Typography>
           <Divider style={{ margin: '20px 0' }} />
-          <Typography variant="body1"><strong>Comments - coming soon!</strong></Typography>
+          <CommentSection post={post}/>
           <Divider style={{ margin: '20px 0' }} />
         </div>
         <div className={classes.imageSection}>
@@ -53,7 +63,7 @@ console.log(post.title)
         </div>
       </div>
       
-      {/*
+      {
       !!recommendedPosts.length && (
         <div className={classes.section}>
           <Typography gutterBottom variant="h5">You might also like:</Typography>
@@ -70,7 +80,7 @@ console.log(post.title)
             ))}
           </div>
         </div>
-      )*/
+      )
     }
     </Paper>
   );
