@@ -19,11 +19,11 @@ app.use('/posts', postsRoute);
 app.use('/user', userRoutes);
 
 //heroku 
-/*
+
 app.get('/', (req, res) =>{
   res.send('Hello to Memories API');
 });
-*/
+
 
 //Mongodb connation. 
 
